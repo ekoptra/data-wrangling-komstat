@@ -1,0 +1,430 @@
+---
+title: "Data Wrangling and Analysis"
+author: "Eko Putra Wahyuddin | 3SD1 | 221810259"
+date: "12/14/2020"
+output: 
+   md_document:
+      variant: markdown_github
+---
+
+## Import Library dan Deklarasi Function
+```{r message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+library(nycflights13)
+library(lubridate)
+library(corrplot)
+library(reshape2)
+library(knitr)
+```
+
+### Fungsi `cekNa`
+Fungsi ini berguna untuk menghitung jumlah NA pada setiap kolom
+```{r}
+cekNa <- function (data){
+      sapply(data, function(x) sum(is.na(x)))      
+}
+```
+
+### Fungsi `convertToDate`
+Fungsi ini berguna untuk menggabungkan tanggal yang terpisah
+```{r}
+convertToDate <- function(year, month, day, hour_minute){
+      ymd_hm(paste(paste(year, month, day, sep = "-"), 
+                   paste(floor(hour_minute / 100), hour_minute %% 100, sep = ":")))
+}
+```
+
+
+## Data Cleaning dan Integration
+
+Flight data merupakan data penerbangan dari tanggal 1 Januari 2013 sampai 31 Desember 2013  di 3 bandara yang ada di New York City, yaitu Bandara International John F Kennedy (JFK), Bandara La Guardia (LGA) dan Bandara International Newark Liberty (EWR). Data ini berasal dari library [`nycflights13`](https://cran.r-project.org/web/packages/nycflights13/nycflights13.pdf).
+
+```{r}
+data("flights")
+kable(sample_n(flights, 7))
+```
+
+Pada library `nycflights13` tersedia juga data lainnya yang mendukung data flight tersebut.
+1. Data weather, yaitu data yang berisi tentang cuaca pada tiga bandara tersebut selama tahun 2013
+```{r}
+data("weather")
+kable(sample_n(weather, 7))
+```
+2. Data airlines, yaitu data nama maskapai yang melakukan penerbangan ditiga bandara tersebut
+```{r}
+data("airlines")
+kable(sample_n(airlines, 7))
+```
+3. Data airports, yaitu data mengenai bandara yang ada di America
+```{r}
+data("airports")
+kable(sample_n(airports, 7))
+```
+4. Data planes, yaitu data mengenai pesawat yang melakukan penerbangan ditiga bandara tersebut
+```{r}
+data("airports")
+kable(sample_n(airports, 7))
+```
+
+### Menghapus data yang tidak legkap
+```{r}
+cekNa(flights)
+```
+
+Terlihat bahwa 6 kolom yang masih mengandung NA. Agar memudahkan analisis maka data tersebut akan dihilangkan
+```{r}
+data <- na.omit(flights)
+cekNa(data)
+```
+
+### Menghapus kolom yang tidak diperlukan
+```{r}
+data <- data %>%
+      select(-c(arr_time, sched_arr_time, flight, air_time, minute)) %>%
+      mutate(sched_dep_time = convertToDate(2013, month, day, sched_dep_time),
+             dep_time = sched_dep_time + dep_delay * 60) 
+kable(sample_n(data, 7))
+```
+
+### Integrasi dengan dataset lainnya
+Saya menggabungkan 4 dataset dengan data flights ini, data yang digabungkan adalah kolom yang akan digunakan untuk melakukan analisis kedepannya.
+
+```{r}
+data <- data %>%
+            left_join(select(weather, -c(dewp, wind_dir, wind_gust, precip)), 
+                      by = c("origin", "time_hour", "month", "day", "year", "hour")) %>%
+            left_join(select(airports, faa, name), 
+                      by = c("origin" = "faa")) %>%
+            select(-year) %>%
+            rename(dep_airport = name) %>%
+            left_join(select(airports, faa, name),
+                      by = c("dest" = "faa")) %>%
+            rename(dest_airport = name) %>%
+            left_join(select(planes, tailnum, year, engine), 
+                      by = "tailnum") %>%
+            rename(year_aiplane = year) %>%
+            left_join(airlines, by = "carrier")
+kable(sample_n(data, 7))
+```
+
+
+Data yang akan dianalisis lebih lanjut sebanyak *327346 data.*
+
+## Soal Nomor 1
+Apakah delay pada semua bandara memiliki suatu pola tertentu ataukah bersifat random? Dengan mengetahui informasi ini dapat membantu kita memahami apakah ada pola tertentu pada delay atau tidak. Jika ada, dengan mengetahui pola delay, kita dapat mencoba mengatasi penyebab sistemik dari delay tersebut. Jika tidak ada, setidaknya kita dapat mengidentifikasi beberapa anomali yang menyebabkan delay. Kita juga dapat mengukur kinerja bandara selama 12 bulan.
+
+Yang akan menjadi fokus adalah *delay keberangkatan*. Ada dua jenis delay. yaitu delay positif adalah jam keberangkatan pesawat lebih lambat dari yang dijadwalkan sebaliknya delay negatif adalah jam keberangkatan pesawat lebih cepat dari yang dijadwalkan.
+
+### Identifikasi delay secara keseluruhan
+
+```{r}
+summary(data$dep_delay)
+```
+
+Terlihat bahwa pada tahun 2013 penerbangan paling cepet berangkat 43 menit dari yang dijadwalkan. Jika diliat dari mediannya yang bernilai -2, berarti ada lebih dari 50% penerbangan pada tahun 2013 yang terbang lebih cepat daripada jadwalnya. Jika ditelusuri lebih lanjut ternyata benar ada 183315 penerbangan yang lebih cepat berangkat dan ada 127745 yang lebih lambat dari yang dijadwalkan
+
+Jika dilihat hasil 5 summarynya terdapat hal yang cukup unik yaitu nilai mediannya negatif akan tetapi nilai rata-ratanya positif dan berbeda sangat jauh, Selain itu kuartil 3 nya lebih kecil dari rata-ratanya. Hal ini disebabkan karena banyaknya delay positif yang masuk ke kategori outlier. Hal ini terlihat dari blox plot dibawah ini. Bentuk dari boxplotnya sampai tidak terlihat dengan jelas karena banyaknya nilai outlier yang positif.
+
+```{r}
+out <- boxplot.stats(data$dep_delay)$out
+outPositif <- sum(out > 0)
+outNegatif <- length(out) - outPositif
+data %>%
+      ggplot(aes(y = dep_delay)) +
+      geom_boxplot() +
+      labs(title = "Box Plot Delay Keberangkatan",
+           subtitle = paste("Jumlah Outlier", length(out)),
+           caption = paste(outPositif, "Outlier atas dan", outNegatif, "outlier bawah")) +
+      theme_minimal() +
+      theme(plot.title = element_text(hjus = 0.5),
+            plot.subtitle = element_text(hjus = 0.5))
+```
+
+
+```{r}
+kable(data[which.max(data$dep_delay), ])
+```
+
+Dari 5 summary, terlihat bahwa ada penerbangan yang delay hingga 1301 menit, atau sekitar 21 jam. Delay terlama itu ternyata terjadi pada tanggal 9 Januari. Penerbangan tersebut adalah penerbangan dari Bandara John F Kennedy ke Bandara Honolulu. Penerbangan tersebut dijadwalkan berangkat padad jama 9 pagi akan tetapi baru berhasil berangkat pada esok harinya jam 6:41 pagi. Maskapai dari penerbangan tersebut adalah Hawaiian Airlines Inc.
+
+
+
+### Melihat delay per bandara keberangkatan
+
+```{r}
+tapply(data$dep_delay, data$dep_airport, function(x){
+      jml <- length(x)
+      c(jumlah = jml,
+           cepat_berangkat = round(sum(x < 0) / jml * 100, 1) ,
+           tepat = round(sum(x == 0)/jml * 100, 1),
+           lama_berangkat = round(sum(x > 0) / jml * 100, 1))
+})
+```
+
+Terlihat bahwa ditiga bandara tersebut persentasi yang lebih cepat berangkat selalu lebih besar dari persentasi yang lambar berangkat. Jika dilihat bandara yang tepat waktu adalah bandara John F Kennedy, sebesar 5.7 persen penerbangannya tepat sesuai dengan yang di jadwalkan, sedangkan untuk bandara yang paling sering delay adalah bandara Newark Liberty dengan persentase 44.7 penerbangan delay pada tahun 2013.
+
+```{r}
+perBandara <- split(data$dep_delay, data$dep_airport)
+kable(sapply(perBandara, summary))
+```
+
+Telihat bahwa di ketiga bandara tersebu rata-rata waktu delai hanya sekitar 10-15 menit. Akan tetapi terlihat juga di Bandara La Guardia terjadi delay terlama selama kurang lebih 15 jam sementara di Newark Liberty kurang lebih 18 jam. Berikut data penerbangan yang memiliki waktu delay terlama di setiap bandara.
+
+```{r}
+maxDelay <- sapply(perBandara, which.max)
+kable(data[maxDelay, ])
+```
+
+```{r}
+data %>%
+      select(dep_delay, dep_airport) %>%
+      group_by(dep_airport) %>%
+      mutate(dep_delay = round(dep_delay / 60)) %>%
+      filter(dep_delay != 0) %>%
+      count(dep_delay) %>%
+      arrange(dep_airport, dep_delay) %>%
+      rename(dep_delay_jam = dep_delay) %>%
+      kable()
+```
+
+Dari tabel diatas terlihat bahwa di ketiga bandara tersebut jumlah penerebangan yang delay kurang lebih sejam merupakan yang terbanyak. Penerbangan yang delay kurang lebih 4 jam hanya sekitar 400-500 di setiap Bandara. Sementara itu untuk delay yang lebih dari 6 jam di Bandara John F Kennedy sebanyak 103 penerbangan, di Bandara La Guardia sebanyak 149 penerbangan, dan di Bandara Newark Liberty 129 penerbangan. Dari beberapa hal yang telah disebutkan diatas, dapat diketahu bahwa kinerja ketiga bandara tersebut relatif sama.
+
+
+Sebelumnya saya akan memisahkan delay yang positif dan negatif
+```{r}
+cepatBerangkat <- filter(data, dep_delay < 0)
+lambatBerangkat <- filter(data, dep_delay > 0)
+```
+
+### Pola Delay Per Bulan
+```{r}
+lambatBerangkat %>%
+      group_by(dep_airport, month) %>%
+      summarise(jumlah = round(mean(dep_delay), 1)) %>%
+      ggplot() +
+      geom_col(aes(x = factor(month), y = jumlah, fill = dep_airport), position = "dodge") +
+      scale_y_continuous(expand = c(0, 0), limits = c(0, 62)) +
+      labs(fill = "",
+           title = "Rata-Rata Delay Positif (menit) per Bulan",
+           x = "",
+           y = "") +
+      theme_minimal() +
+      theme(legend.position = "bottom",
+            plot.title = element_text(hjust = 0.5, size = 15),
+            plot.margin = margin(c(20,20,20,10)),
+            legend.box.margin = margin(-20, 0, 0, 0))
+```
+
+```{r}
+data %>% 
+      count(month) %>% 
+      arrange(desc(n)) %>%
+      rename(jumlah_penerbangan = n) %>%
+      kable()
+```
+Terlihat bahwa rata-rata delay terlama pada tahan 2013 terjadi pada bulan Juni dan Juli. Sementara itu pada bulan Agustus dan Oktober yang memiliki jumlah penerbangan terbanyak malah memiliki rata-rata delay yang lebih rebdah dari bulan Juni dan Juli. Ini mengindikasikan ada sesuatu yang terjadi pada bulan Juni dan Juli hingga menyebabkan rata-rata waktu delay terlama.
+
+### Pola Delay Perjam
+
+```{r}
+lambatBerangkat %>%
+      group_by(dep_airport, hour) %>%
+      summarise(jumlah = round(mean(dep_delay), 1)) %>%
+      ggplot() +
+      geom_col(aes(x = factor(hour), y = jumlah, fill = dep_airport), position = "dodge") +
+      scale_y_continuous(expand = c(0, 0), limits = c(0, 62)) +
+      labs(fill = "",
+           title = "Rata-Rata Delay Positif (menit) per Jam",
+           x = "",
+           y = "") +
+      theme_minimal() +
+      theme(legend.position = "bottom",
+            plot.title = element_text(hjust = 0.5, size = 15),
+            plot.margin = margin(c(20,20,20,10)),
+            legend.box.margin = margin(-20, 0, 0, 0))
+```
+
+Dari diagram diatas terlihat pola yang sama untuk setiap bandara. Bandara akan mulai penerbangan sekitar jam 5 pagi hingga jam 23, kecuali untuk Bandara La Guardia, hanya sampai jam 22. Semakin bertambah jamnya maka rata-rata delay per menitnya semakin tinggi dan akan memuncak pada malam hari pukul 19-22. Untuk penerbangan di pagi hari, rata-rata delay tidak sampai 30 menit. Setalah pukul 16 sore rata-rata delay sudah mencapai 40 menit. 
+
+```{r}
+cepatBerangkat %>%
+      group_by(dep_airport, hour) %>%
+      summarise(jumlah = round(mean(abs(dep_delay)), 1)) %>%
+      ggplot() +
+      geom_col(aes(x = factor(hour), y = jumlah, fill = dep_airport), position = "dodge") +
+      scale_y_continuous(expand = c(0, 0)) +
+      labs(fill = "",
+           title = "Rata-Rata Delay negatif (menit) per Jam",
+           x = "",
+           y = "") +
+      theme_minimal() +
+      theme(legend.position = "bottom",
+            plot.title = element_text(hjust = 0.5, size = 15),
+            plot.margin = margin(c(20,20,20,10)),
+            legend.box.margin = margin(-20, 0, 0, 0))
+```
+
+Sementara untuk delay yang negatif tidak terlihat pola yang signifikan. Jika dilihat dari delay rata-ratanya tidak mencapai 10 menit. Keberangkatan yang lebih cepat ternyata tidak terlalu signifikan dan masih dapat dianggap tepat waktu, karena bahkan tidak melebihi 10 menit.
+
+```{r}
+lambatBerangkat %>%
+      group_by(dep_airport, visib) %>%
+      summarise(jumlah = round(mean(abs(dep_delay)), 1)) %>%
+      ggplot() +
+      geom_col(aes(x = factor(round(visib)), y = jumlah, fill = dep_airport), position = "dodge") +
+      scale_y_continuous(expand = c(0, 0)) +
+      labs(fill = "",
+           title = "Rata-Rata Delay Positif (menit) per Visibilitas",
+           x = "Visibility in miles",
+           y = "") +
+      theme_minimal() +
+      theme(legend.position = "bottom",
+            plot.title = element_text(hjust = 0.5, size = 15),
+            plot.margin = margin(c(20,20,20,10)),
+            legend.box.margin = margin(-10, 0, 0, 0))
+```
+
+Jika dilihat berdasarkan visibilitas pandangan di udara, semakin kecil visibilitas maka semakin tinggi rata-rata delay. Ini adalah sesuatu yang wajar karena suatu penerbangan tidak akan mengambil resiko jika jarak pandang diudaranya sangat pendek.
+
+
+
+
+```{r message=FALSE, warning=FALSE}
+col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
+correlation <- lambatBerangkat %>%
+                  select(wind_speed, pressure, humid, dep_delay, temp) %>%
+                  na.omit() %>% cor()
+
+col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
+corrplot(correlation, method = "color", type="lower", col = col(200), tl.srt=45, 
+         addCoef.col = "black", order="hclust") + 
+title("Correlation Plot")
+```
+
+Dari korelasi plot diatas tidak didapati korelasi yang signifikan antara delay keberangkatan penerbangan tahun 2013 dengan keadaan cuaca seperti wind_speed, pressure, temperature, dan humadity
+
+### Kesimpulan
+Dari beberapa hal yang dijabarkan diatas dapat diambil beberapa kesimpulan
+
+1. Kinerja dari 3 bandara tersebut sama, tidak ada yang menonjol lebih baik. Ketiganya memiliki jumlah rata-rata delay yang hampir sama.
+2. Pola delay berdasarkan bulan, terjadi paling sering pada bulan Juni dan Juli meskipun begitu Juni dan Juli bukan merupakan bulan yang memiliki penerbangan paling banyak
+3. Pola delay positif memiliki trend yang positif terhadap jam di ketiga bandara tersebut. Puncak rata-rata delay positif  terjadi pada jam 19-22.
+4. Delay negatif tidak memiliki pola tehadap jam. Rata-ratanya juga hanya berkisar 4-5 menit disetiap bandara. 
+5. Delay juga mengikuti pola terhadap visibilitas penglihatan di udara dan ini adalah hal yang wajar. Jika jarang pandang diudara kecil maka penerbangan akan cenderung ditunda.
+6. Penerbangan pada tahun 2013 di New York tidak dibanyak dipengaruhi oleh cuaca, karena korelasi antara beberapa komponen cuaca dengan waktu delay sangat kecil.
+
+## Soal 2
+
+Carrier mana yang memiliki kinerja paling baik dan paling buruk selama tahun 2013?
+Which carriers have been the top and the bottom performers in 2013?
+Pertanyaan ini akan membantu kita mengidentifikasi carrier mana yang memiliki kinerja
+buruk sepanjang 2013. Informasi ini dapat menginformasikan masyarakat untuk
+menghindari berpergian dengan carrier tersebut.
+
+
+Untuk melihat kinerja dari maskapai saya akan menggunakan 3 indikator
+
+### Indikator 1
+Indikator pertama adalah ketepatan keberangkatan dan kedatangan sesuai dengan jadwal
+
+```{r}
+data %>% 
+      mutate(dep_delay = abs(dep_delay),
+             arr_delay = abs(arr_delay)) %>%
+      select(dep_delay, arr_delay, carrier, name) %>%
+      group_by(carrier) %>%
+      summarise(mean_dep_delay = mean(dep_delay),
+                mean_arr_delay = mean(arr_delay)) %>%
+      melt() %>%
+      ggplot() +
+      geom_col(aes(x = reorder(carrier, value), 
+                   y = value, 
+                   fill = variable), 
+               position = "dodge") +
+      labs(title = "Rata-rata delay (menit)\nKeberangkatan dan Kedatangan Bedasarkan Maskapai",
+           fill = "",
+           x = "", 
+           y = "") +
+      scale_y_continuous(expand = c(0, NA), limits = c(0, 35)) +
+      scale_fill_brewer(labels = c("Delay Keberangkatan", "Delay Kedatangan"),
+                        palette = "Set2") +
+      theme_minimal() +
+      theme(legend.position = "bottom",
+            plot.title = element_text(hjust = 0.5, size = 15),
+            plot.margin = margin(c(20,20,20,10)),
+            legend.box.margin = margin(-10, 0, 0, 0))
+      
+```
+
+Telihat berdasarkan indikator ini maskapai yang sering delay baik keberangkatan maupun kedatangan adalah maskapai Mesa Airlines Inc. Sementara itu maskapai yang sangat baik dalam indikator ini adalah maskapai US Airways Inc.
+
+### Indikator Dua
+Indikator kedua adalah kesesuaian lama diudara. Misalanya jika keberangkatan delay 2 menit maka maksimal kedatangan juga maksimal delay 2 menit, jika lebih dari itu maka akan dianggap tidak wajar, karena melebihi waktu penerbangan yang sesungguhnya.
+
+```{r}
+data %>%
+      filter(arr_delay > dep_delay) %>%
+      mutate(tambahan_diudara = arr_delay - dep_delay) %>%
+      select(tambahan_diudara, carrier) %>%
+      group_by(carrier) %>%
+      summarise(jumlah = mean(tambahan_diudara)) %>%
+      arrange(jumlah) %>%
+      ggplot(aes(x = reorder(carrier, jumlah), 
+                   y = jumlah)) +
+      geom_col(fill = "#fc8d62") +
+      geom_text(aes(label = round(jumlah, 1)), vjust = -0.7, size = 3) +
+      labs(title = "Rata-rata Tambahan Waktu (menit)\ndi Udara Bedasarkan Maskapai",
+           x = "Maskapai", 
+           y = "") +
+      scale_y_continuous(expand = c(0, NA), limits = c(0, 23)) +
+      theme_minimal() +
+      theme(legend.position = "bottom",
+            plot.title = element_text(hjust = 0.5, size = 15),
+            plot.margin = margin(c(20,20,20,10)),
+            legend.box.margin = margin(-10, 0, 0, 0),
+            axis.text.y = element_blank())
+      
+```
+
+Dari gambar diatas terlihat bahwa rata-rata penambahan waktu di udara yang terlama adalah maskapai Frontier Airlines Inc. dengan rata-rata 20.8 menit. Sementara itu maskapai yang memiliki rata-rata penambahan waktu paling sedikit adalah maskapai ExpressJet Airlines Inc.
+
+### Indikator ketiga
+Indikator ketiga adalah tahun keluaran pesawat yang dimiliki oleh maskapai
+
+```{r}
+tmp <- data %>%
+      distinct(tailnum, carrier, .keep_all = TRUE) %>%
+      select(year_aiplane, carrier) %>%
+      na.omit()
+tmp$year_aiplane <- cut(tmp$year_aiplane, 
+                        breaks = c(1940, 2000, 2010, 2020),
+                        labels = c("Bawah 2000", "2000an", "2010an"))
+
+tmp %>%
+      group_by(carrier, year_aiplane) %>%
+      summarise(jumlah = n()) %>%
+      ggplot(aes(x = reorder(carrier, jumlah), y = jumlah, fill = year_aiplane)) +
+      geom_col(position = "dodge") +
+      labs(title = "Jumlah Pesawat Berdasarkan Waktu Pembuatan",
+           fill = "",
+           x = "", 
+           y = "") +
+      scale_y_continuous(expand = c(0, NA), limits = c(0, 490)) +
+      scale_fill_brewer(palette = "Set2") +
+      theme_minimal() +
+      theme(legend.position = "bottom",
+            plot.title = element_text(hjust = 0.5, size = 15),
+            plot.margin = margin(c(20,20,20,10)),
+            legend.box.margin = margin(-10, 0, 0, 0))
+```
+
+Dari gambar diatas terlihat bahwa maskapai Envoy Air (MQ) hanya memiliki pesawat buatan tahun 2000 kebawah. Begitu juga dengan maskapai Delta Air Lines Inc. (DL) masih banyak menggunakan pesawat buatan tahun 2000 kebawah, tentu saja hal ini dapat menjadi pertimbangan dalam menentukan maskapai yang akan digunakan. Semakin tua pesawat maka akan semakin beresiko pesawat itu.
+
+Sementara itu maskapai dengan jumlah pesawat terbanyak buatan 2010an keatas adalah maskapai Southwest Airlines Co (VN) dan terdapat juga beberapa maskapai lainnya yang sudah memiliki pesawat buatan 2010an keatas.
+
+
+### Kesimpulan
+Dari beberapa penjelasan diatas untuk menentukan carrier yang mempunyai performa terbaik dapat dilihat dari carrier yang paling sesuai dengan jadwal keberangkatan maupun kedatangan dan lama waktu di udara yang sesuai. Dari hasil analisis diperoleh bahwa maskapai US Airways Inc yang memiliki performa terbaik karena pada indikator satu menduduki peringkat pertama dan indikator dua memduduki urutan ke 4.
+
+Selain itu, untuk masyarakat dapat menghindari pemakaian carrier dengan melihat jenis pesawat yang digunakan oleh maskapai tersebut, terutama dari segi waktu pembuatan pesawat tersebut
