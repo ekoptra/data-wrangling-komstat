@@ -34,7 +34,7 @@ convertToDate <- function(year, month, day, hour_minute){
 }
 ```
 
-# Data Cleaning dan Integration
+## Data Cleaning dan Integration
 
 
 Flight data merupakan data penerbangan dari tanggal 1 Januari 2013
@@ -46,7 +46,7 @@ library
 
 ``` r
 data("flights")
-kable(sample_n(flights, 7))
+kable(sample_n(flights, 5))
 ```
 
 <table>
@@ -97,161 +97,121 @@ kable(sample_n(flights, 7))
 <tbody>
 <tr class="odd">
 <td style="text-align: right;">2013</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">1920</td>
-<td style="text-align: right;">1930</td>
-<td style="text-align: right;">-10</td>
-<td style="text-align: right;">2210</td>
-<td style="text-align: right;">2213</td>
-<td style="text-align: right;">-3</td>
-<td style="text-align: left;">DL</td>
-<td style="text-align: right;">1715</td>
-<td style="text-align: left;">N323NB</td>
-<td style="text-align: left;">LGA</td>
-<td style="text-align: left;">MSY</td>
-<td style="text-align: right;">189</td>
-<td style="text-align: right;">1183</td>
-<td style="text-align: right;">19</td>
-<td style="text-align: right;">30</td>
-<td style="text-align: left;">2013-01-14 19:00:00</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">1647</td>
-<td style="text-align: right;">1648</td>
-<td style="text-align: right;">-1</td>
-<td style="text-align: right;">1823</td>
-<td style="text-align: right;">1824</td>
-<td style="text-align: right;">-1</td>
-<td style="text-align: left;">UA</td>
-<td style="text-align: right;">627</td>
-<td style="text-align: left;">N803UA</td>
-<td style="text-align: left;">EWR</td>
-<td style="text-align: left;">ORD</td>
-<td style="text-align: right;">115</td>
-<td style="text-align: right;">719</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">48</td>
-<td style="text-align: left;">2013-01-06 16:00:00</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">2013</td>
 <td style="text-align: right;">8</td>
-<td style="text-align: right;">30</td>
-<td style="text-align: right;">647</td>
-<td style="text-align: right;">650</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: right;">2242</td>
+<td style="text-align: right;">2245</td>
 <td style="text-align: right;">-3</td>
-<td style="text-align: right;">843</td>
-<td style="text-align: right;">908</td>
-<td style="text-align: right;">-25</td>
-<td style="text-align: left;">UA</td>
-<td style="text-align: right;">343</td>
-<td style="text-align: left;">N574UA</td>
-<td style="text-align: left;">LGA</td>
-<td style="text-align: left;">DEN</td>
-<td style="text-align: right;">207</td>
-<td style="text-align: right;">1620</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">50</td>
-<td style="text-align: left;">2013-08-30 06:00:00</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">26</td>
-<td style="text-align: right;">709</td>
-<td style="text-align: right;">710</td>
-<td style="text-align: right;">-1</td>
-<td style="text-align: right;">950</td>
-<td style="text-align: right;">1000</td>
-<td style="text-align: right;">-10</td>
-<td style="text-align: left;">AA</td>
-<td style="text-align: right;">2493</td>
-<td style="text-align: left;">N640AA</td>
-<td style="text-align: left;">JFK</td>
-<td style="text-align: left;">MCO</td>
-<td style="text-align: right;">128</td>
-<td style="text-align: right;">944</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: left;">2013-09-26 07:00:00</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">28</td>
-<td style="text-align: right;">608</td>
-<td style="text-align: right;">615</td>
-<td style="text-align: right;">-7</td>
-<td style="text-align: right;">734</td>
-<td style="text-align: right;">729</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: left;">EV</td>
-<td style="text-align: right;">3824</td>
-<td style="text-align: left;">N13994</td>
-<td style="text-align: left;">EWR</td>
-<td style="text-align: left;">IAD</td>
-<td style="text-align: right;">48</td>
-<td style="text-align: right;">212</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: left;">2013-08-28 06:00:00</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">11</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">2125</td>
-<td style="text-align: right;">2010</td>
-<td style="text-align: right;">75</td>
-<td style="text-align: right;">2232</td>
-<td style="text-align: right;">2122</td>
-<td style="text-align: right;">70</td>
+<td style="text-align: right;">2335</td>
+<td style="text-align: right;">2359</td>
+<td style="text-align: right;">-24</td>
 <td style="text-align: left;">B6</td>
-<td style="text-align: right;">418</td>
-<td style="text-align: left;">N373JB</td>
+<td style="text-align: right;">1816</td>
+<td style="text-align: left;">N368JB</td>
 <td style="text-align: left;">JFK</td>
-<td style="text-align: left;">BOS</td>
-<td style="text-align: right;">37</td>
-<td style="text-align: right;">187</td>
-<td style="text-align: right;">20</td>
+<td style="text-align: left;">SYR</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">209</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: left;">2013-08-25 22:00:00</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2013</td>
 <td style="text-align: right;">10</td>
-<td style="text-align: left;">2013-11-07 20:00:00</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">2344</td>
+<td style="text-align: right;">2025</td>
+<td style="text-align: right;">199</td>
+<td style="text-align: right;">119</td>
+<td style="text-align: right;">2228</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: left;">EV</td>
+<td style="text-align: right;">4348</td>
+<td style="text-align: left;">N13202</td>
+<td style="text-align: left;">EWR</td>
+<td style="text-align: left;">MSP</td>
+<td style="text-align: right;">138</td>
+<td style="text-align: right;">1008</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: left;">2013-10-11 20:00:00</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">2013</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">18</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">1721</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">1926</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: left;">EV</td>
-<td style="text-align: right;">3847</td>
-<td style="text-align: left;">N14960</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">947</td>
+<td style="text-align: right;">855</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">1316</td>
+<td style="text-align: right;">1214</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: left;">B6</td>
+<td style="text-align: right;">1061</td>
+<td style="text-align: left;">N284JB</td>
+<td style="text-align: left;">JFK</td>
+<td style="text-align: left;">AUS</td>
+<td style="text-align: right;">239</td>
+<td style="text-align: right;">1521</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: left;">2013-02-19 08:00:00</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">1300</td>
+<td style="text-align: right;">1300</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1530</td>
+<td style="text-align: right;">1610</td>
+<td style="text-align: right;">-40</td>
+<td style="text-align: left;">VX</td>
+<td style="text-align: right;">165</td>
+<td style="text-align: left;">N639VA</td>
 <td style="text-align: left;">EWR</td>
-<td style="text-align: left;">IND</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">645</td>
-<td style="text-align: right;">17</td>
-<td style="text-align: right;">21</td>
-<td style="text-align: left;">2013-06-18 17:00:00</td>
+<td style="text-align: left;">LAX</td>
+<td style="text-align: right;">312</td>
+<td style="text-align: right;">2454</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">2013-05-19 13:00:00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">2057</td>
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">2312</td>
+<td style="text-align: right;">2230</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: left;">9E</td>
+<td style="text-align: right;">4033</td>
+<td style="text-align: left;">N8936A</td>
+<td style="text-align: left;">LGA</td>
+<td style="text-align: left;">TYS</td>
+<td style="text-align: right;">107</td>
+<td style="text-align: right;">647</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">2013-02-20 20:00:00</td>
 </tr>
 </tbody>
 </table>
 
 Pada library `nycflights13` tersedia juga data lainnya yang mendukung
-data flight tersebut. 1. Data weather, yaitu data yang berisi tentang
+data flight tersebut. 
+
+1. Data weather, yaitu data yang berisi tentang
 cuaca pada tiga bandara tersebut selama tahun 2013
 
 ``` r
 data("weather")
-kable(sample_n(weather, 7))
+kable(sample_n(weather, 5))
 ```
 
 <table style="width:100%;">
@@ -293,128 +253,94 @@ kable(sample_n(weather, 7))
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">LGA</td>
+<td style="text-align: left;">JFK</td>
 <td style="text-align: right;">2013</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">33.80</td>
-<td style="text-align: right;">30.92</td>
-<td style="text-align: right;">91.66</td>
-<td style="text-align: right;">70</td>
-<td style="text-align: right;">8.05546</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">35.96</td>
+<td style="text-align: right;">6.98</td>
+<td style="text-align: right;">29.29</td>
+<td style="text-align: right;">320</td>
+<td style="text-align: right;">13.80936</td>
 <td style="text-align: right;">NA</td>
-<td style="text-align: right;">0.12</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: left;">2013-01-16 05:00:00</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1026.0</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">2013-11-28 14:00:00</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">LGA</td>
 <td style="text-align: right;">2013</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">13</td>
-<td style="text-align: right;">32.00</td>
-<td style="text-align: right;">12.92</td>
-<td style="text-align: right;">44.74</td>
-<td style="text-align: right;">310</td>
-<td style="text-align: right;">14.96014</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">78.98</td>
+<td style="text-align: right;">66.02</td>
+<td style="text-align: right;">64.54</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.00000</td>
 <td style="text-align: right;">NA</td>
-<td style="text-align: right;">0.00</td>
-<td style="text-align: right;">1016.8</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1002.7</td>
 <td style="text-align: right;">10</td>
-<td style="text-align: left;">2013-01-02 13:00:00</td>
+<td style="text-align: left;">2013-07-24 04:00:00</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">LGA</td>
 <td style="text-align: right;">2013</td>
-<td style="text-align: right;">6</td>
 <td style="text-align: right;">9</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">66.02</td>
-<td style="text-align: right;">57.92</td>
-<td style="text-align: right;">75.12</td>
-<td style="text-align: right;">320</td>
-<td style="text-align: right;">4.60312</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">71.06</td>
+<td style="text-align: right;">48.92</td>
+<td style="text-align: right;">45.43</td>
 <td style="text-align: right;">NA</td>
-<td style="text-align: right;">0.00</td>
-<td style="text-align: right;">1018.4</td>
+<td style="text-align: right;">5.75390</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1022.6</td>
 <td style="text-align: right;">10</td>
-<td style="text-align: left;">2013-06-09 03:00:00</td>
+<td style="text-align: left;">2013-09-09 15:00:00</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">LGA</td>
 <td style="text-align: right;">2013</td>
+<td style="text-align: right;">7</td>
 <td style="text-align: right;">8</td>
-<td style="text-align: right;">10</td>
 <td style="text-align: right;">19</td>
-<td style="text-align: right;">80.06</td>
-<td style="text-align: right;">53.96</td>
-<td style="text-align: right;">40.54</td>
-<td style="text-align: right;">330</td>
-<td style="text-align: right;">10.35702</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">84.92</td>
+<td style="text-align: right;">66.92</td>
+<td style="text-align: right;">54.90</td>
+<td style="text-align: right;">210</td>
+<td style="text-align: right;">16.11092</td>
+<td style="text-align: right;">21.86482</td>
+<td style="text-align: right;">0</td>
 <td style="text-align: right;">1015.2</td>
 <td style="text-align: right;">10</td>
-<td style="text-align: left;">2013-08-10 19:00:00</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">LGA</td>
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">42.08</td>
-<td style="text-align: right;">32.00</td>
-<td style="text-align: right;">67.22</td>
-<td style="text-align: right;">80</td>
-<td style="text-align: right;">3.45234</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">0.00</td>
-<td style="text-align: right;">1015.0</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: left;">2013-12-02 05:00:00</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">LGA</td>
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">39.02</td>
-<td style="text-align: right;">10.04</td>
-<td style="text-align: right;">29.80</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">12.65858</td>
-<td style="text-align: right;">18.41248</td>
-<td style="text-align: right;">0.00</td>
-<td style="text-align: right;">1025.2</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: left;">2013-04-06 09:00:00</td>
+<td style="text-align: left;">2013-07-08 19:00:00</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">JFK</td>
 <td style="text-align: right;">2013</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">22</td>
-<td style="text-align: right;">42.08</td>
-<td style="text-align: right;">39.02</td>
-<td style="text-align: right;">88.81</td>
-<td style="text-align: right;">30</td>
-<td style="text-align: right;">17.26170</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">71.06</td>
+<td style="text-align: right;">68.00</td>
+<td style="text-align: right;">90.06</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">4.60312</td>
 <td style="text-align: right;">NA</td>
-<td style="text-align: right;">0.00</td>
-<td style="text-align: right;">1007.4</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: left;">2013-04-12 22:00:00</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1012.1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: left;">2013-08-28 06:00:00</td>
 </tr>
 </tbody>
 </table>
 
-1.  Data airlines, yaitu data nama maskapai yang melakukan penerbangan
+2.  Data airlines, yaitu data nama maskapai yang melakukan penerbangan
     ditiga bandara tersebut
 
 ``` r
@@ -424,29 +350,29 @@ kable(sample_n(airlines, 7))
 
 | carrier | name                   |
 |:--------|:-----------------------|
-| F9      | Frontier Airlines Inc. |
-| B6      | JetBlue Airways        |
-| WN      | Southwest Airlines Co. |
 | OO      | SkyWest Airlines Inc.  |
-| YV      | Mesa Airlines Inc.     |
-| UA      | United Air Lines Inc.  |
+| AS      | Alaska Airlines Inc.   |
 | HA      | Hawaiian Airlines Inc. |
+| B6      | JetBlue Airways        |
+| AA      | American Airlines Inc. |
+| DL      | Delta Air Lines Inc.   |
+| 9E      | Endeavor Air Inc.      |
 
-1.  Data airports, yaitu data mengenai bandara yang ada di America
+3.  Data airports, yaitu data mengenai bandara yang ada di America
 
 ``` r
 data("airports")
-kable(sample_n(airports, 7))
+kable(sample_n(airports, 5))
 ```
 
-<table>
+<table style="width:100%;">
 <colgroup>
 <col style="width: 4%" />
-<col style="width: 37%" />
+<col style="width: 39%" />
 <col style="width: 9%" />
-<col style="width: 12%" />
+<col style="width: 11%" />
 <col style="width: 5%" />
-<col style="width: 4%" />
+<col style="width: 3%" />
 <col style="width: 4%" />
 <col style="width: 21%" />
 </colgroup>
@@ -464,182 +390,73 @@ kable(sample_n(airports, 7))
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">3W2</td>
-<td style="text-align: left;">Put-in-Bay Airport</td>
-<td style="text-align: right;">41.35210</td>
-<td style="text-align: right;">-82.49700</td>
-<td style="text-align: right;">595</td>
-<td style="text-align: right;">-5</td>
-<td style="text-align: left;">A</td>
-<td style="text-align: left;">America/New_York</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ZTF</td>
-<td style="text-align: left;">Stamford Amtrak Station</td>
-<td style="text-align: right;">41.04694</td>
-<td style="text-align: right;">-73.54149</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-5</td>
-<td style="text-align: left;">A</td>
-<td style="text-align: left;">America/New_York</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">NGF</td>
-<td style="text-align: left;">Kaneohe Bay Mcaf</td>
-<td style="text-align: right;">21.45045</td>
-<td style="text-align: right;">-157.76800</td>
-<td style="text-align: right;">24</td>
-<td style="text-align: right;">-10</td>
-<td style="text-align: left;">A</td>
-<td style="text-align: left;">Pacific/Honolulu</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">LVM</td>
-<td style="text-align: left;">Mission Field Airport</td>
-<td style="text-align: right;">45.69939</td>
-<td style="text-align: right;">-110.44831</td>
-<td style="text-align: right;">4660</td>
-<td style="text-align: right;">-7</td>
-<td style="text-align: left;">A</td>
-<td style="text-align: left;">America/Denver</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">LOZ</td>
-<td style="text-align: left;">London-Corbin Airport-MaGee Field</td>
-<td style="text-align: right;">37.08689</td>
-<td style="text-align: right;">-84.07739</td>
-<td style="text-align: right;">1212</td>
-<td style="text-align: right;">-5</td>
-<td style="text-align: left;">A</td>
-<td style="text-align: left;">America/New_York</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DAW</td>
-<td style="text-align: left;">Skyhaven Airport</td>
-<td style="text-align: right;">43.28406</td>
-<td style="text-align: right;">-70.92928</td>
-<td style="text-align: right;">321</td>
-<td style="text-align: right;">-5</td>
-<td style="text-align: left;">A</td>
-<td style="text-align: left;">America/New_York</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">RCE</td>
-<td style="text-align: left;">Roche Harbor Seaplane Base</td>
-<td style="text-align: right;">48.60806</td>
-<td style="text-align: right;">-123.15972</td>
+<td style="text-align: left;">WSX</td>
+<td style="text-align: left;">Westsound Seaplane Base</td>
+<td style="text-align: right;">48.61778</td>
+<td style="text-align: right;">-122.95278</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">-8</td>
 <td style="text-align: left;">A</td>
 <td style="text-align: left;">America/Los_Angeles</td>
 </tr>
-</tbody>
-</table>
-
-1.  Data planes, yaitu data mengenai pesawat yang melakukan penerbangan
-    ditiga bandara tersebut
-
-``` r
-data("airports")
-kable(sample_n(airports, 7))
-```
-
-<table>
-<colgroup>
-<col style="width: 4%" />
-<col style="width: 41%" />
-<col style="width: 9%" />
-<col style="width: 11%" />
-<col style="width: 5%" />
-<col style="width: 3%" />
-<col style="width: 4%" />
-<col style="width: 19%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">faa</th>
-<th style="text-align: left;">name</th>
-<th style="text-align: right;">lat</th>
-<th style="text-align: right;">lon</th>
-<th style="text-align: right;">alt</th>
-<th style="text-align: right;">tz</th>
-<th style="text-align: left;">dst</th>
-<th style="text-align: left;">tzone</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">FMN</td>
-<td style="text-align: left;">Four Corners Rgnl</td>
-<td style="text-align: right;">36.74125</td>
-<td style="text-align: right;">-108.22994</td>
-<td style="text-align: right;">5506</td>
-<td style="text-align: right;">-7</td>
-<td style="text-align: left;">A</td>
-<td style="text-align: left;">America/Denver</td>
-</tr>
 <tr class="even">
-<td style="text-align: left;">NIB</td>
-<td style="text-align: left;">Nikolai Airport</td>
-<td style="text-align: right;">63.01083</td>
-<td style="text-align: right;">-154.38389</td>
-<td style="text-align: right;">427</td>
-<td style="text-align: right;">-9</td>
-<td style="text-align: left;">A</td>
-<td style="text-align: left;">America/Anchorage</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">CEF</td>
-<td style="text-align: left;">Westover Arb Metropolitan</td>
-<td style="text-align: right;">42.19401</td>
-<td style="text-align: right;">-72.53478</td>
-<td style="text-align: right;">241</td>
+<td style="text-align: left;">HYA</td>
+<td style="text-align: left;">Barnstable Muni Boardman Polando Fld</td>
+<td style="text-align: right;">41.66934</td>
+<td style="text-align: right;">-70.28036</td>
+<td style="text-align: right;">55</td>
 <td style="text-align: right;">-5</td>
 <td style="text-align: left;">A</td>
 <td style="text-align: left;">America/New_York</td>
 </tr>
-<tr class="even">
-<td style="text-align: left;">HDO</td>
-<td style="text-align: left;">Hondo Municipal Airport</td>
-<td style="text-align: right;">29.35910</td>
-<td style="text-align: right;">-99.17750</td>
-<td style="text-align: right;">930</td>
-<td style="text-align: right;">-6</td>
-<td style="text-align: left;">A</td>
-<td style="text-align: left;">America/Chicago</td>
-</tr>
 <tr class="odd">
-<td style="text-align: left;">SPS</td>
-<td style="text-align: left;">Sheppard Afb Wichita Falls Muni</td>
-<td style="text-align: right;">33.98880</td>
-<td style="text-align: right;">-98.49189</td>
-<td style="text-align: right;">1019</td>
-<td style="text-align: right;">-6</td>
+<td style="text-align: left;">AKB</td>
+<td style="text-align: left;">Atka Airport</td>
+<td style="text-align: right;">52.22028</td>
+<td style="text-align: right;">-174.20639</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: right;">-9</td>
 <td style="text-align: left;">A</td>
-<td style="text-align: left;">America/Chicago</td>
+<td style="text-align: left;">America/Anchorage</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">RFD</td>
-<td style="text-align: left;">Chicago Rockford International Airport</td>
-<td style="text-align: right;">42.19536</td>
-<td style="text-align: right;">-89.09722</td>
-<td style="text-align: right;">742</td>
-<td style="text-align: right;">-6</td>
+<td style="text-align: left;">IKR</td>
+<td style="text-align: left;">Kirtland Air Force Base</td>
+<td style="text-align: right;">35.04022</td>
+<td style="text-align: right;">-106.60919</td>
+<td style="text-align: right;">5355</td>
+<td style="text-align: right;">-7</td>
 <td style="text-align: left;">A</td>
-<td style="text-align: left;">America/Chicago</td>
+<td style="text-align: left;">America/Denver</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">MYU</td>
-<td style="text-align: left;">Mekoryuk Airport</td>
-<td style="text-align: right;">60.37140</td>
-<td style="text-align: right;">-166.27100</td>
-<td style="text-align: right;">48</td>
+<td style="text-align: left;">PEC</td>
+<td style="text-align: left;">Pelican Seaplane Base</td>
+<td style="text-align: right;">57.95528</td>
+<td style="text-align: right;">-136.23639</td>
+<td style="text-align: right;">0</td>
 <td style="text-align: right;">-9</td>
 <td style="text-align: left;">A</td>
 <td style="text-align: left;">America/Anchorage</td>
 </tr>
 </tbody>
 </table>
+
+4.  Data planes, yaitu data mengenai pesawat yang melakukan penerbangan
+    ditiga bandara tersebut
+
+``` r
+data("planes")
+kable(sample_n(airports, 5))
+```
+
+| faa | name                    |       lat|         lon|  alt|   tz| dst | tzone                |
+|:----|:------------------------|---------:|-----------:|----:|----:|:----|:---------------------|
+| AKB | Atka Airport            |  52.22028|  -174.20639|   56|   -9| A   | America/Anchorage    |
+| EET | Shelby County Airport   |  33.17778|   -86.78322|  586|   -6| A   | America/Chicago      |
+| FNT | Bishop International    |  42.96542|   -83.74363|  782|   -5| A   | America/New\_York    |
+| CYM | Chatham Seaplane Base   |  57.51500|  -134.94611|    0|   -9| A   | America/Anchorage    |
+| TOA | Zamperini Field Airport |  33.80339|  -118.33961|  101|   -8| A   | America/Los\_Angeles |
 
 ### Menghapus data yang tidak legkap
 
@@ -680,7 +497,7 @@ data <- data %>%
       select(-c(arr_time, sched_arr_time, flight, air_time, minute)) %>%
       mutate(sched_dep_time = convertToDate(2013, month, day, sched_dep_time),
              dep_time = sched_dep_time + dep_delay * 60) 
-kable(sample_n(data, 7))
+kable(sample_n(data, 5))
 ```
 
 <table>
@@ -721,115 +538,83 @@ kable(sample_n(data, 7))
 <tbody>
 <tr class="odd">
 <td style="text-align: right;">2013</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">19</td>
-<td style="text-align: left;">2013-07-19 10:53:00</td>
-<td style="text-align: left;">2013-07-19 11:00:00</td>
-<td style="text-align: right;">-7</td>
-<td style="text-align: right;">-14</td>
-<td style="text-align: left;">DL</td>
-<td style="text-align: left;">N981DL</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: left;">2013-02-23 19:52:00</td>
+<td style="text-align: left;">2013-02-23 20:00:00</td>
+<td style="text-align: right;">-8</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: left;">B6</td>
+<td style="text-align: left;">N646JB</td>
 <td style="text-align: left;">JFK</td>
-<td style="text-align: left;">MCO</td>
-<td style="text-align: right;">944</td>
-<td style="text-align: right;">11</td>
-<td style="text-align: left;">2013-07-19 11:00:00</td>
+<td style="text-align: left;">PBI</td>
+<td style="text-align: right;">1028</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">2013-02-23 20:00:00</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">2013</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">17</td>
-<td style="text-align: left;">2013-01-17 14:40:00</td>
-<td style="text-align: left;">2013-01-17 14:45:00</td>
-<td style="text-align: right;">-5</td>
-<td style="text-align: right;">5</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">2013-03-04 06:07:00</td>
+<td style="text-align: left;">2013-03-04 06:15:00</td>
+<td style="text-align: right;">-8</td>
+<td style="text-align: right;">-41</td>
 <td style="text-align: left;">US</td>
-<td style="text-align: left;">N563UW</td>
-<td style="text-align: left;">LGA</td>
+<td style="text-align: left;">N700UW</td>
+<td style="text-align: left;">JFK</td>
 <td style="text-align: left;">CLT</td>
-<td style="text-align: right;">544</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: left;">2013-01-17 14:00:00</td>
+<td style="text-align: right;">541</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">2013-03-04 06:00:00</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">2013</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">30</td>
-<td style="text-align: left;">2013-09-30 16:55:00</td>
-<td style="text-align: left;">2013-09-30 17:00:00</td>
-<td style="text-align: right;">-5</td>
-<td style="text-align: right;">-20</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: left;">2013-05-28 19:57:00</td>
+<td style="text-align: left;">2013-05-28 20:00:00</td>
+<td style="text-align: right;">-3</td>
+<td style="text-align: right;">-1</td>
 <td style="text-align: left;">DL</td>
-<td style="text-align: left;">N914DE</td>
+<td style="text-align: left;">N963DL</td>
 <td style="text-align: left;">LGA</td>
 <td style="text-align: left;">ATL</td>
 <td style="text-align: right;">762</td>
-<td style="text-align: right;">17</td>
-<td style="text-align: left;">2013-09-30 17:00:00</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">2013-05-28 20:00:00</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">2013</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">11</td>
-<td style="text-align: left;">2013-01-11 16:19:00</td>
-<td style="text-align: left;">2013-01-11 16:20:00</td>
-<td style="text-align: right;">-1</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: left;">US</td>
-<td style="text-align: left;">N523UW</td>
-<td style="text-align: left;">JFK</td>
-<td style="text-align: left;">PHX</td>
-<td style="text-align: right;">2153</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: left;">2013-01-11 16:00:00</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">2013-06-02 12:09:00</td>
-<td style="text-align: left;">2013-06-02 12:01:00</td>
 <td style="text-align: right;">8</td>
-<td style="text-align: right;">3</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: left;">2013-08-11 17:12:00</td>
+<td style="text-align: left;">2013-08-11 17:15:00</td>
+<td style="text-align: right;">-3</td>
+<td style="text-align: right;">8</td>
 <td style="text-align: left;">EV</td>
-<td style="text-align: left;">N16981</td>
+<td style="text-align: left;">N13550</td>
 <td style="text-align: left;">EWR</td>
-<td style="text-align: left;">JAX</td>
-<td style="text-align: right;">820</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: left;">2013-06-02 12:00:00</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">2013</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: left;">2013-06-16 17:34:00</td>
-<td style="text-align: left;">2013-06-16 17:35:00</td>
-<td style="text-align: right;">-1</td>
-<td style="text-align: right;">-10</td>
-<td style="text-align: left;">AA</td>
-<td style="text-align: left;">N3EEAA</td>
-<td style="text-align: left;">JFK</td>
-<td style="text-align: left;">IAH</td>
-<td style="text-align: right;">1417</td>
+<td style="text-align: left;">CVG</td>
+<td style="text-align: right;">569</td>
 <td style="text-align: right;">17</td>
-<td style="text-align: left;">2013-06-16 17:00:00</td>
+<td style="text-align: left;">2013-08-11 17:00:00</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">2013</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: left;">2013-07-15 16:03:00</td>
-<td style="text-align: left;">2013-07-15 16:04:00</td>
-<td style="text-align: right;">-1</td>
-<td style="text-align: right;">-12</td>
-<td style="text-align: left;">EV</td>
-<td style="text-align: left;">N751EV</td>
-<td style="text-align: left;">LGA</td>
-<td style="text-align: left;">BNA</td>
-<td style="text-align: right;">764</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: left;">2013-07-15 16:00:00</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: left;">2013-08-28 06:28:00</td>
+<td style="text-align: left;">2013-08-28 06:11:00</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: left;">B6</td>
+<td style="text-align: left;">N506JB</td>
+<td style="text-align: left;">JFK</td>
+<td style="text-align: left;">SJU</td>
+<td style="text-align: right;">1598</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">2013-08-28 06:00:00</td>
 </tr>
 </tbody>
 </table>
@@ -855,10 +640,10 @@ data <- data %>%
                       by = "tailnum") %>%
             rename(year_aiplane = year) %>%
             left_join(airlines, by = "carrier")
-kable(sample_n(data, 7))
+kable(sample_n(data, 5))
 ```
 
-<table>
+<table style="width:100%;">
 <colgroup>
 <col style="width: 2%" />
 <col style="width: 1%" />
@@ -866,8 +651,8 @@ kable(sample_n(data, 7))
 <col style="width: 7%" />
 <col style="width: 3%" />
 <col style="width: 3%" />
-<col style="width: 2%" />
-<col style="width: 2%" />
+<col style="width: 3%" />
+<col style="width: 3%" />
 <col style="width: 2%" />
 <col style="width: 1%" />
 <col style="width: 3%" />
@@ -879,7 +664,7 @@ kable(sample_n(data, 7))
 <col style="width: 3%" />
 <col style="width: 2%" />
 <col style="width: 7%" />
-<col style="width: 12%" />
+<col style="width: 9%" />
 <col style="width: 4%" />
 <col style="width: 3%" />
 <col style="width: 9%" />
@@ -913,179 +698,129 @@ kable(sample_n(data, 7))
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">11</td>
-<td style="text-align: right;">30</td>
-<td style="text-align: left;">2013-11-30 10:57:00</td>
-<td style="text-align: left;">2013-11-30 10:59:00</td>
-<td style="text-align: right;">-2</td>
-<td style="text-align: right;">-22</td>
-<td style="text-align: left;">UA</td>
-<td style="text-align: left;">N475UA</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: left;">2013-07-21 07:24:00</td>
+<td style="text-align: left;">2013-07-21 07:25:00</td>
+<td style="text-align: right;">-1</td>
+<td style="text-align: right;">-13</td>
+<td style="text-align: left;">WN</td>
+<td style="text-align: left;">N459WN</td>
 <td style="text-align: left;">EWR</td>
-<td style="text-align: left;">TPA</td>
-<td style="text-align: right;">997</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: left;">2013-11-30 10:00:00</td>
-<td style="text-align: right;">33.08</td>
-<td style="text-align: right;">48.98</td>
-<td style="text-align: right;">6.90468</td>
-<td style="text-align: right;">1040.7</td>
+<td style="text-align: left;">BNA</td>
+<td style="text-align: right;">748</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: left;">2013-07-21 07:00:00</td>
+<td style="text-align: right;">78.08</td>
+<td style="text-align: right;">57.87</td>
+<td style="text-align: right;">9.20624</td>
+<td style="text-align: right;">1012.5</td>
 <td style="text-align: right;">10</td>
 <td style="text-align: left;">Newark Liberty Intl</td>
-<td style="text-align: left;">Tampa Intl</td>
-<td style="text-align: right;">2001</td>
+<td style="text-align: left;">Nashville Intl</td>
+<td style="text-align: right;">2004</td>
 <td style="text-align: left;">Turbo-fan</td>
-<td style="text-align: left;">United Air Lines Inc.</td>
+<td style="text-align: left;">Southwest Airlines Co.</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">8</td>
+<td style="text-align: right;">3</td>
 <td style="text-align: right;">25</td>
-<td style="text-align: left;">2013-08-25 13:22:00</td>
-<td style="text-align: left;">2013-08-25 13:26:00</td>
+<td style="text-align: left;">2013-03-25 08:14:00</td>
+<td style="text-align: left;">2013-03-25 08:20:00</td>
+<td style="text-align: right;">-6</td>
+<td style="text-align: right;">-30</td>
+<td style="text-align: left;">MQ</td>
+<td style="text-align: left;">N534MQ</td>
+<td style="text-align: left;">LGA</td>
+<td style="text-align: left;">BNA</td>
+<td style="text-align: right;">764</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: left;">2013-03-25 08:00:00</td>
+<td style="text-align: right;">39.92</td>
+<td style="text-align: right;">57.33</td>
+<td style="text-align: right;">17.26170</td>
+<td style="text-align: right;">1003.0</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">La Guardia</td>
+<td style="text-align: left;">Nashville Intl</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">Envoy Air</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: left;">2013-03-14 15:03:00</td>
+<td style="text-align: left;">2013-03-14 15:07:00</td>
 <td style="text-align: right;">-4</td>
-<td style="text-align: right;">-25</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: left;">B6</td>
+<td style="text-align: left;">N789JB</td>
+<td style="text-align: left;">JFK</td>
+<td style="text-align: left;">SJU</td>
+<td style="text-align: right;">1598</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: left;">2013-03-14 15:00:00</td>
+<td style="text-align: right;">39.92</td>
+<td style="text-align: right;">27.42</td>
+<td style="text-align: right;">20.71404</td>
+<td style="text-align: right;">1011.3</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">John F Kennedy Intl</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">2011</td>
+<td style="text-align: left;">Turbo-fan</td>
+<td style="text-align: left;">JetBlue Airways</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: left;">2013-12-22 13:25:00</td>
+<td style="text-align: left;">2013-12-22 12:05:00</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">69</td>
 <td style="text-align: left;">EV</td>
-<td style="text-align: left;">N14960</td>
+<td style="text-align: left;">N48901</td>
 <td style="text-align: left;">EWR</td>
-<td style="text-align: left;">IND</td>
-<td style="text-align: right;">645</td>
-<td style="text-align: right;">13</td>
-<td style="text-align: left;">2013-08-25 13:00:00</td>
-<td style="text-align: right;">82.04</td>
-<td style="text-align: right;">36.77</td>
-<td style="text-align: right;">9.20624</td>
-<td style="text-align: right;">1027.1</td>
+<td style="text-align: left;">SAV</td>
+<td style="text-align: right;">708</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">2013-12-22 12:00:00</td>
+<td style="text-align: right;">69.98</td>
+<td style="text-align: right;">65.54</td>
+<td style="text-align: right;">12.65858</td>
+<td style="text-align: right;">1012.2</td>
 <td style="text-align: right;">10</td>
 <td style="text-align: left;">Newark Liberty Intl</td>
-<td style="text-align: left;">Indianapolis Intl</td>
-<td style="text-align: right;">1998</td>
+<td style="text-align: left;">Savannah Hilton Head Intl</td>
+<td style="text-align: right;">2001</td>
 <td style="text-align: left;">Turbo-fan</td>
 <td style="text-align: left;">ExpressJet Airlines Inc.</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">10</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: left;">2013-10-15 14:54:00</td>
-<td style="text-align: left;">2013-10-15 15:00:00</td>
-<td style="text-align: right;">-6</td>
-<td style="text-align: right;">-2</td>
-<td style="text-align: left;">US</td>
-<td style="text-align: left;">N954UW</td>
-<td style="text-align: left;">LGA</td>
-<td style="text-align: left;">BOS</td>
-<td style="text-align: right;">184</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: left;">2013-10-15 15:00:00</td>
-<td style="text-align: right;">68.00</td>
-<td style="text-align: right;">58.80</td>
-<td style="text-align: right;">8.05546</td>
-<td style="text-align: right;">1020.8</td>
 <td style="text-align: right;">10</td>
-<td style="text-align: left;">La Guardia</td>
-<td style="text-align: left;">General Edward Lawrence Logan Intl</td>
-<td style="text-align: right;">2007</td>
-<td style="text-align: left;">Turbo-fan</td>
-<td style="text-align: left;">US Airways Inc.</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: left;">2013-05-03 14:13:00</td>
-<td style="text-align: left;">2013-05-03 12:00:00</td>
-<td style="text-align: right;">133</td>
-<td style="text-align: right;">136</td>
-<td style="text-align: left;">UA</td>
-<td style="text-align: left;">N466UA</td>
-<td style="text-align: left;">LGA</td>
-<td style="text-align: left;">ORD</td>
-<td style="text-align: right;">733</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: left;">2013-05-03 12:00:00</td>
-<td style="text-align: right;">60.08</td>
-<td style="text-align: right;">37.37</td>
-<td style="text-align: right;">16.11092</td>
-<td style="text-align: right;">1030.2</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: left;">La Guardia</td>
-<td style="text-align: left;">Chicago Ohare Intl</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: left;">Turbo-fan</td>
-<td style="text-align: left;">United Air Lines Inc.</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: left;">2013-03-03 09:11:00</td>
-<td style="text-align: left;">2013-03-03 09:18:00</td>
-<td style="text-align: right;">-7</td>
-<td style="text-align: right;">-7</td>
-<td style="text-align: left;">B6</td>
-<td style="text-align: left;">N516JB</td>
+<td style="text-align: left;">2013-10-10 08:56:00</td>
+<td style="text-align: left;">2013-10-10 09:00:00</td>
+<td style="text-align: right;">-4</td>
+<td style="text-align: right;">-10</td>
+<td style="text-align: left;">DL</td>
+<td style="text-align: left;">N721TW</td>
 <td style="text-align: left;">JFK</td>
-<td style="text-align: left;">BOS</td>
-<td style="text-align: right;">187</td>
+<td style="text-align: left;">LAX</td>
+<td style="text-align: right;">2475</td>
 <td style="text-align: right;">9</td>
-<td style="text-align: left;">2013-03-03 09:00:00</td>
-<td style="text-align: right;">33.08</td>
-<td style="text-align: right;">48.98</td>
-<td style="text-align: right;">13.80936</td>
-<td style="text-align: right;">1007.0</td>
+<td style="text-align: left;">2013-10-10 09:00:00</td>
+<td style="text-align: right;">57.02</td>
+<td style="text-align: right;">83.21</td>
+<td style="text-align: right;">17.26170</td>
+<td style="text-align: right;">1023.1</td>
 <td style="text-align: right;">10</td>
 <td style="text-align: left;">John F Kennedy Intl</td>
-<td style="text-align: left;">General Edward Lawrence Logan Intl</td>
-<td style="text-align: right;">2000</td>
-<td style="text-align: left;">Turbo-fan</td>
-<td style="text-align: left;">JetBlue Airways</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: left;">2013-08-03 06:11:00</td>
-<td style="text-align: left;">2013-08-03 06:14:00</td>
-<td style="text-align: right;">-3</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">US</td>
-<td style="text-align: left;">N103US</td>
-<td style="text-align: left;">JFK</td>
-<td style="text-align: left;">CLT</td>
-<td style="text-align: right;">541</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: left;">2013-08-03 06:00:00</td>
-<td style="text-align: right;">73.04</td>
-<td style="text-align: right;">70.68</td>
-<td style="text-align: right;">6.90468</td>
-<td style="text-align: right;">1012.9</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: left;">John F Kennedy Intl</td>
-<td style="text-align: left;">Charlotte Douglas Intl</td>
+<td style="text-align: left;">Los Angeles Intl</td>
 <td style="text-align: right;">1999</td>
 <td style="text-align: left;">Turbo-fan</td>
-<td style="text-align: left;">US Airways Inc.</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">11</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: left;">2013-11-08 16:49:00</td>
-<td style="text-align: left;">2013-11-08 16:50:00</td>
-<td style="text-align: right;">-1</td>
-<td style="text-align: right;">-7</td>
-<td style="text-align: left;">9E</td>
-<td style="text-align: left;">N295PQ</td>
-<td style="text-align: left;">JFK</td>
-<td style="text-align: left;">CVG</td>
-<td style="text-align: right;">589</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: left;">2013-11-08 16:00:00</td>
-<td style="text-align: right;">48.02</td>
-<td style="text-align: right;">32.53</td>
-<td style="text-align: right;">21.86482</td>
-<td style="text-align: right;">1019.1</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: left;">John F Kennedy Intl</td>
-<td style="text-align: left;">Cincinnati Northern Kentucky Intl</td>
-<td style="text-align: right;">2013</td>
-<td style="text-align: left;">Turbo-fan</td>
-<td style="text-align: left;">Endeavor Air Inc.</td>
+<td style="text-align: left;">Delta Air Lines Inc.</td>
 </tr>
 </tbody>
 </table>
@@ -1534,6 +1269,7 @@ lambatBerangkat %>%
             legend.box.margin = margin(-20, 0, 0, 0))
 ```
 
+  
 
 ![](laporan_files/figure-markdown_github/unnamed-chunk-21-1.png)
 
@@ -1617,7 +1353,7 @@ cepatBerangkat %>%
             legend.box.margin = margin(-20, 0, 0, 0))
 ```
 
-
+  
 
 ![](laporan_files/figure-markdown_github/unnamed-chunk-24-1.png)
 
@@ -1625,6 +1361,86 @@ Sementara untuk delay yang negatif tidak terlihat pola yang signifikan.
 Jika dilihat dari delay rata-ratanya tidak mencapai 10 menit.
 Keberangkatan yang lebih cepat ternyata tidak terlalu signifikan dan
 masih dapat dianggap tepat waktu, karena bahkan tidak melebihi 10 menit.
+
+### Persentase Delay Per jam
+
+Dengan menganggap keterlambatan kurang dari 5 menit merupakan sesuatu
+yang diwajarkan maka diperoleh hasil sebagai berikut
+
+``` r
+data %>%
+      group_by(dep_airport, hour) %>%
+      summarise(jumlah_penerbangan =  n(),
+                persentase_delay = round(sum(dep_delay > 5) / jumlah_penerbangan * 100, 1),
+                persentase_ontime = round(sum(dep_delay <= 5) / jumlah_penerbangan * 100, 1)) %>%
+      kable()
+```
+
+  
+
+| dep\_airport        |  hour|  jumlah\_penerbangan|  persentase\_delay|  persentase\_ontime|
+|:--------------------|-----:|--------------------:|------------------:|-------------------:|
+| John F Kennedy Intl |     5|                  745|               12.2|                87.8|
+| John F Kennedy Intl |     6|                 6184|               12.3|                87.7|
+| John F Kennedy Intl |     7|                 6958|               12.8|                87.2|
+| John F Kennedy Intl |     8|                10626|               16.5|                83.5|
+| John F Kennedy Intl |     9|                 6402|               20.0|                80.0|
+| John F Kennedy Intl |    10|                 4620|               20.6|                79.4|
+| John F Kennedy Intl |    11|                 2938|               21.0|                79.0|
+| John F Kennedy Intl |    12|                 4981|               23.3|                76.7|
+| John F Kennedy Intl |    13|                 4211|               28.0|                72.0|
+| John F Kennedy Intl |    14|                 7657|               30.5|                69.5|
+| John F Kennedy Intl |    15|                 7950|               38.0|                62.0|
+| John F Kennedy Intl |    16|                 8411|               37.0|                63.0|
+| John F Kennedy Intl |    17|                 8528|               35.0|                65.0|
+| John F Kennedy Intl |    18|                 7708|               38.3|                61.7|
+| John F Kennedy Intl |    19|                 8369|               42.8|                57.2|
+| John F Kennedy Intl |    20|                 6060|               42.9|                57.1|
+| John F Kennedy Intl |    21|                 3406|               48.4|                51.6|
+| John F Kennedy Intl |    22|                 2306|               39.2|                60.8|
+| John F Kennedy Intl |    23|                 1019|               35.7|                64.3|
+| La Guardia          |     5|                  306|               12.7|                87.3|
+| La Guardia          |     6|                 8335|                9.3|                90.7|
+| La Guardia          |     7|                 6996|                9.5|                90.5|
+| La Guardia          |     8|                 7024|               14.5|                85.5|
+| La Guardia          |     9|                 7556|               16.1|                83.9|
+| La Guardia          |    10|                 5200|               19.3|                80.7|
+| La Guardia          |    11|                 7863|               24.0|                76.0|
+| La Guardia          |    12|                 5825|               23.7|                76.3|
+| La Guardia          |    13|                 6395|               29.1|                70.9|
+| La Guardia          |    14|                 6589|               29.1|                70.9|
+| La Guardia          |    15|                 6677|               32.3|                67.7|
+| La Guardia          |    16|                 6344|               36.0|                64.0|
+| La Guardia          |    17|                 6773|               39.3|                60.7|
+| La Guardia          |    18|                 6519|               38.0|                62.0|
+| La Guardia          |    19|                 6425|               39.6|                60.4|
+| La Guardia          |    20|                 3241|               40.0|                60.0|
+| La Guardia          |    21|                 2881|               37.2|                62.8|
+| La Guardia          |    22|                  191|               46.1|                53.9|
+| Newark Liberty Intl |     5|                  889|               13.0|                87.0|
+| Newark Liberty Intl |     6|                10928|               16.1|                83.9|
+| Newark Liberty Intl |     7|                 8521|               18.3|                81.7|
+| Newark Liberty Intl |     8|                 9084|               21.9|                78.1|
+| Newark Liberty Intl |     9|                 5973|               20.8|                79.2|
+| Newark Liberty Intl |    10|                 6550|               22.9|                77.1|
+| Newark Liberty Intl |    11|                 4888|               23.8|                76.2|
+| Newark Liberty Intl |    12|                 6938|               31.8|                68.2|
+| Newark Liberty Intl |    13|                 8851|               35.1|                64.9|
+| Newark Liberty Intl |    14|                 6776|               42.5|                57.5|
+| Newark Liberty Intl |    15|                 8455|               44.1|                55.9|
+| Newark Liberty Intl |    16|                 7290|               42.9|                57.1|
+| Newark Liberty Intl |    17|                 8366|               48.0|                52.0|
+| Newark Liberty Intl |    18|                 6845|               47.4|                52.6|
+| Newark Liberty Intl |    19|                 5713|               53.4|                46.6|
+| Newark Liberty Intl |    20|                 6760|               50.8|                49.2|
+| Newark Liberty Intl |    21|                 4216|               50.8|                49.2|
+| Newark Liberty Intl |    22|                   61|               54.1|                45.9|
+| Newark Liberty Intl |    23|                   23|               52.2|                47.8|
+
+Terlihat bahwa untuk setiap bandara persentasi terjadinya delay semakin
+naik seiring bertambahnya jam. Untuk jam 12 kebahaw peluang terjadinya
+delay yang lebih dari 5 menit hanya dibawah 25%. Oleh karena itu sangat
+disarankan untuk memilih penerbangan dibawah jam 12 siang.
 
 ``` r
 lambatBerangkat %>%
@@ -1644,9 +1460,9 @@ lambatBerangkat %>%
             legend.box.margin = margin(-10, 0, 0, 0))
 ```
 
+  
 
-
-![](laporan_files/figure-markdown_github/unnamed-chunk-25-1.png)
+![](laporan_files/figure-markdown_github/unnamed-chunk-26-1.png)
 
 Jika dilihat berdasarkan visibilitas pandangan di udara, semakin kecil
 visibilitas maka semakin tinggi rata-rata delay. Ini adalah sesuatu yang
@@ -1665,9 +1481,9 @@ corrplot(correlation, method = "color", type="lower", col = col(200), tl.srt=45,
 title("Correlation Plot")
 ```
 
-![](laporan_files/figure-markdown_github/unnamed-chunk-26-1.png)
+![](laporan_files/figure-markdown_github/unnamed-chunk-27-1.png)
 
-  
+    ## numeric(0)
 
 Dari korelasi plot diatas tidak didapati korelasi yang signifikan antara
 delay keberangkatan penerbangan tahun 2013 dengan keadaan cuaca seperti
@@ -1686,12 +1502,13 @@ kesimpulan
 3.  Pola delay positif memiliki trend yang positif terhadap jam di
     ketiga bandara tersebut. Puncak rata-rata delay positif terjadi pada
     jam 19-22.
-4.  Delay negatif tidak memiliki pola tehadap jam. Rata-ratanya juga
+4.	Sangat disarankan untuk memilih penerbangan dibawah jam 12 karena peluag terjadinya delay yang lebih dari 5 menit dibawah 25%
+5.  Delay negatif tidak memiliki pola tehadap jam. Rata-ratanya juga
     hanya berkisar 4-5 menit disetiap bandara.
-5.  Delay juga mengikuti pola terhadap visibilitas penglihatan di udara
+6.  Delay juga mengikuti pola terhadap visibilitas penglihatan di udara
     dan ini adalah hal yang wajar. Jika jarang pandang diudara kecil
     maka penerbangan akan cenderung ditunda.
-6.  Penerbangan pada tahun 2013 di New York tidak dibanyak dipengaruhi
+7.  Penerbangan pada tahun 2013 di New York tidak dibanyak dipengaruhi
     oleh cuaca, karena korelasi antara beberapa komponen cuaca dengan
     waktu delay sangat kecil.
 
@@ -1740,11 +1557,9 @@ data %>%
             legend.box.margin = margin(-10, 0, 0, 0))
 ```
 
-  
+    
 
-    ## Using carrier as id variables
-
-![](laporan_files/figure-markdown_github/unnamed-chunk-27-1.png)
+![](laporan_files/figure-markdown_github/unnamed-chunk-28-1.png)
 
 Telihat berdasarkan indikator ini maskapai yang sering delay baik
 keberangkatan maupun kedatangan adalah maskapai Mesa Airlines
@@ -1781,10 +1596,9 @@ data %>%
             legend.box.margin = margin(-10, 0, 0, 0),
             axis.text.y = element_blank())
 ```
+    
 
- 
-
-![](laporan_files/figure-markdown_github/unnamed-chunk-28-1.png)
+![](laporan_files/figure-markdown_github/unnamed-chunk-29-1.png)
 
 Dari gambar diatas terlihat bahwa rata-rata penambahan waktu di udara
 yang terlama adalah maskapai Frontier Airlines Inc. dengan rata-rata
@@ -1823,9 +1637,8 @@ tmp %>%
             legend.box.margin = margin(-10, 0, 0, 0))
 ```
 
- 
 
-![](laporan_files/figure-markdown_github/unnamed-chunk-29-1.png)
+![](laporan_files/figure-markdown_github/unnamed-chunk-30-1.png)
 
 Dari gambar diatas terlihat bahwa maskapai Envoy Air (MQ) hanya memiliki
 pesawat buatan tahun 2000 kebawah. Begitu juga dengan maskapai Delta Air
@@ -1851,3 +1664,5 @@ pertama dan indikator dua memduduki urutan ke 4.
 Selain itu, untuk masyarakat dapat menghindari pemakaian carrier dengan
 melihat jenis pesawat yang digunakan oleh maskapai tersebut, terutama
 dari segi waktu pembuatan pesawat tersebut
+
+

@@ -42,14 +42,14 @@ Flight data merupakan data penerbangan dari tanggal 1 Januari 2013 sampai 31 Des
 
 ```{r}
 data("flights")
-kable(sample_n(flights, 7))
+kable(sample_n(flights, 5))
 ```
 
 Pada library `nycflights13` tersedia juga data lainnya yang mendukung data flight tersebut.
 1. Data weather, yaitu data yang berisi tentang cuaca pada tiga bandara tersebut selama tahun 2013
 ```{r}
 data("weather")
-kable(sample_n(weather, 7))
+kable(sample_n(weather, 5))
 ```
 2. Data airlines, yaitu data nama maskapai yang melakukan penerbangan ditiga bandara tersebut
 ```{r}
@@ -59,12 +59,12 @@ kable(sample_n(airlines, 7))
 3. Data airports, yaitu data mengenai bandara yang ada di America
 ```{r}
 data("airports")
-kable(sample_n(airports, 7))
+kable(sample_n(airports, 5))
 ```
 4. Data planes, yaitu data mengenai pesawat yang melakukan penerbangan ditiga bandara tersebut
 ```{r}
-data("airports")
-kable(sample_n(airports, 7))
+data("planes")
+kable(sample_n(airports, 5))
 ```
 
 ### Menghapus data yang tidak legkap
@@ -84,7 +84,7 @@ data <- data %>%
       select(-c(arr_time, sched_arr_time, flight, air_time, minute)) %>%
       mutate(sched_dep_time = convertToDate(2013, month, day, sched_dep_time),
              dep_time = sched_dep_time + dep_delay * 60) 
-kable(sample_n(data, 7))
+kable(sample_n(data, 5))
 ```
 
 ### Integrasi dengan dataset lainnya
@@ -105,7 +105,7 @@ data <- data %>%
                       by = "tailnum") %>%
             rename(year_aiplane = year) %>%
             left_join(airlines, by = "carrier")
-kable(sample_n(data, 7))
+kable(sample_n(data, 5))
 ```
 
 
@@ -266,6 +266,19 @@ cepatBerangkat %>%
 ```
 
 Sementara untuk delay yang negatif tidak terlihat pola yang signifikan. Jika dilihat dari delay rata-ratanya tidak mencapai 10 menit. Keberangkatan yang lebih cepat ternyata tidak terlalu signifikan dan masih dapat dianggap tepat waktu, karena bahkan tidak melebihi 10 menit.
+
+### Persentase Delay Per jam
+Dengan menganggap keterlambatan kurang dari 5 menit merupakan sesuatu yang diwajarkan maka diperoleh hasil sebagai berikut
+```{r}
+data %>%
+      group_by(dep_airport, hour) %>%
+      summarise(jumlah_penerbangan =  n(),
+                persentase_delay = round(sum(dep_delay > 5) / jumlah_penerbangan * 100, 1),
+                persentase_ontime = round(sum(dep_delay <= 5) / jumlah_penerbangan * 100, 1)) %>%
+      kable()
+```
+
+Terlihat bahwa untuk setiap bandara persentasi terjadinya delay semakin naik seiring bertambahnya jam. Untuk jam 12 kebahaw peluang terjadinya delay yang lebih dari 5 menit hanya dibawah 25%. Oleh karena itu sangat disarankan untuk memilih penerbangan dibawah jam 12 siang.
 
 ```{r}
 lambatBerangkat %>%
